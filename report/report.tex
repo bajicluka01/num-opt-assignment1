@@ -1,5 +1,7 @@
 \documentclass{article}
-\usepackage{graphicx} % Required for inserting images
+\usepackage{graphicx} 
+\usepackage{amsmath}
+\usepackage{amsfonts}
 
 \title{Nonlinear Optimization - Assignment 1}
 \author{Sam Kische, Anja Misimovic, Luka Bajić}
@@ -9,6 +11,462 @@
 
 \maketitle
 
-\section{Introduction}
+\section*{1 \quad Characterization of Functions}
+
+\subsection*{a) $f(\textbf{x})=(\textbf{a}^T\textbf{x}-d)^2 \text{ where } \textbf{a}=(-1,3)^T, d=2.5$}
+
+Because $\textbf{a}$ and $d$ are constant, we can rewrite $f$ as $f(\textbf{x}) = (-x_1+3x_2-2.5)^2$, for which we then compute partial derivatives with respect to $x_1$ and $x_2$:
+
+\begin{equation*}
+	\frac{\partial f(\textbf{x})}{\partial x_1} = -2(-x_1+3x_2-2.5)
+\end{equation*}
+
+\begin{equation*}
+	\frac{\partial f(\textbf{x})}{\partial x_2} = 6(-x_1+3x_2-2.5)
+\end{equation*}
+
+\noindent
+Simplifying the brackets, we get the gradient:
+
+\begin{equation*}
+	\nabla f(\textbf{x}) = \begin{bmatrix}
+		2x_1-6x_2+5 \\
+		-6x_1+18x_2-15
+	\end{bmatrix}
+\end{equation*}
+
+\noindent
+Next we compute partial derivatives of the gradient with respect to $x_1$ and $x_2$:
+
+\begin{equation*}
+	\frac{\partial\nabla f(\textbf{x})}{\partial x_1} = \begin{bmatrix}
+		2 \\
+		-6
+	\end{bmatrix}
+\end{equation*}
+
+\begin{equation*}
+	\frac{\partial\nabla f(\textbf{x})}{\partial x_2} = \begin{bmatrix}
+		-6 \\
+		18
+	\end{bmatrix}
+\end{equation*}
+
+\noindent
+which gives us the Hessian matrix:
+
+\begin{equation*}
+	\nabla^2f(\textbf{x})=\begin{bmatrix}
+		-2 & -6 \\
+		-6 & 18
+	\end{bmatrix}
+\end{equation*}
+
+\noindent
+To find the eigenvalues of the Hessian matrix, we need to solve $\text{det}(\nabla^2f(\textbf{x})-\lambda I_2)=0$:
+
+\begin{equation*}
+\text{det}(\nabla^2f(\textbf{x})-\lambda I_2) = \text{det}(\begin{bmatrix}
+	2-\lambda & -6 \\
+	-6 & 18-\lambda
+\end{bmatrix}) = (2-\lambda)(18-\lambda)-((-6)*(-6))=
+\end{equation*}
+
+\begin{equation*}
+=36-20\lambda+\lambda^2-36=\lambda^2-20\lambda=\lambda(\lambda-20)
+\end{equation*}
+
+\noindent
+Setting $\lambda(\lambda-20)$ to 0, we get $\lambda_1=20$ and $\lambda_2=0$, which implies that the Hessian matrix is positive semi-definite, because $\lambda_i\geq 0\quad \forall i \in {1,\dots,n}$, where $n$ is the dimension of the gradient.
+
+\hfill
+
+\noindent
+To find the stationary points we have to equate the gradient with a zero vector, i.e. $\nabla f(\textbf{x})=\begin{bmatrix}0 \\ 0\end{bmatrix}$, which gives us the following system of equations:
+
+\begin{equation*}
+	2x_1-6x_2+5=0
+\end{equation*}
+
+\begin{equation*}
+	-6x_1+18x_2-15=0
+\end{equation*}
+
+\noindent
+We immediately see that if we multiply the first equation with 3 and equate the two equations, we get $6x_1-18x_2+15=-6x_1+18x_2-15$, where both $x_1$ and $x_2$ terms cancel out, which implies that the equality holds for any $x_1,x_2\in\mathbb{R}$. In terms of optimization this means that the entire hyperplane defined by $2x_1-6x_2+5=0$ is a valid solution. And due to the established positive-semidefiniteness of the Hessian matrix, the entire hyperplane is a strict local minimum. 
+
+\pagebreak
+\subsection*{b) $f(\textbf{x})=(x_1-2)^2+x_1x_2^2-2$}
+
+Computing the partial derivatives of $f$ with respect to $x_1$ and $x_2$ we get:
+
+\begin{equation*}
+	\frac{\partial f(\textbf{x})}{\partial x_1} = 2(x_1-2)+x_2^2=2x_1+x_2^2-4
+\end{equation*}
+
+\begin{equation*}
+	\frac{\partial f(\textbf{x})}{\partial x_2} = 2x_1x_2
+\end{equation*}
+
+\noindent
+which gives us the gradient:
+
+\begin{equation*}
+	\nabla f(\textbf{x}) = \begin{bmatrix}
+		2x_1+x_2^2-4 \\
+		2x_1x_2
+	\end{bmatrix}
+\end{equation*}
+
+\noindent
+Next we compute the partial derivatives of the gradient with respect to $x_1$ and $x_2$:
+
+\begin{equation*}
+	\frac{\partial\nabla f(\textbf{x})}{\partial x_1} = \begin{bmatrix}
+		2 \\
+		2x_2
+	\end{bmatrix}
+\end{equation*}
+
+\begin{equation*}
+	\frac{\partial\nabla f(\textbf{x})}{\partial x_2} = \begin{bmatrix}
+		2x_2 \\
+		2x_1
+	\end{bmatrix}
+\end{equation*}
+
+\noindent
+which gives us the Hessian matrix:
+
+\begin{equation*}
+	\nabla^2f(\textbf{x})=\begin{bmatrix}
+		2 & 2x_2 \\
+		2x_2 & 2x_1
+	\end{bmatrix}
+\end{equation*}
+
+\noindent
+To find stationary points we have to equate the gradient with the zero vector, i.e. $\nabla f(x)=\begin{bmatrix} 0 \\ 0\end{bmatrix}$, which gives us a system of equations: 
+
+\begin{equation*}
+	2x_1+x_2^2-4=0
+\end{equation*}
+
+\begin{equation*}
+	2x_1x_2=0
+\end{equation*}
+
+\noindent
+Rearranging the first equation we get $x_2=\sqrt{-2x_1+4}$, which we plug into the second equation to get $2x_1\sqrt{-2x_1+4}=0$. Squaring both sides of the equations and then multiplying with $-\frac{1}{8}$, we get:
+
+\begin{equation*}
+	4x_1^2(-2x_1+4)=0
+\end{equation*}
+
+\begin{equation*}
+	-8x_1^3+16x_1^2=0
+\end{equation*}
+
+\begin{equation*}
+	x_1^3-2x_1^2=0
+\end{equation*}
+
+\begin{equation*}
+	x_1^2(x_1-2)=0
+\end{equation*}
+
+\noindent
+from which we get three candidate x-values: $x_1,1=x_1,2=0$ and $x_1,3=2$. Plugging these three values into the first equation we get:
+
+\begin{equation*}
+	2\cdot 0+x_2^2-4=0
+\end{equation*}
+
+\begin{equation*}
+	x^2=\sqrt{4}
+\end{equation*}
+
+\noindent
+which gives us $x_{2,1}=2$, $x_{2,2}=-2$. And
+
+\begin{equation*}
+	2\cdot2+x_2^2-4=0
+\end{equation*}
+
+\begin{equation*}
+	x_2^2=0
+\end{equation*}
+
+\noindent
+which gives us $x_{2,3}=0$. Therefore we have obtained three candidate points for local extrema: $\begin{bmatrix}0 \\ 2 \end{bmatrix}$, $\begin{bmatrix}0 \\ -2 \end{bmatrix}$ and $\begin{bmatrix}2 \\ 0 \end{bmatrix}$.
+
+\hfill
+
+\noindent
+To check whether these points are minima, maxima or saddle points, we plug each of them into the Hessian matrix and determine the definiteness of the obtained matrix: 
+
+\begin{itemize}
+	\item $\textbf{x}=\begin{bmatrix}2 \\ 0\end{bmatrix}$:
+	
+	\begin{equation*}
+		\nabla^2f(\begin{bmatrix}2 \\ 0\end{bmatrix}) = \begin{bmatrix}2 & 0\\0 & 2\end{bmatrix}
+	\end{equation*}
+	
+	\noindent
+	The matrix is diagonal, so the eigenvalues are $\lambda_1=2>0$ and $\lambda_2=2>0$, therefore the matrix is positive definite, and the point $\begin{bmatrix}2 \\ 0\end{bmatrix}$ is a strict local minimum.
+
+
+	\item $\textbf{x}=\begin{bmatrix}0 \\ 2\end{bmatrix}$:
+	
+	\begin{equation*}
+		\nabla^2f(\begin{bmatrix}0 \\ 2\end{bmatrix}) = \begin{bmatrix}2 & 4\\4 & 0\end{bmatrix}
+	\end{equation*}
+	
+	TODO
+
+	\item $\textbf{x}=\begin{bmatrix}0 \\ -2\end{bmatrix}$:
+	
+	\begin{equation*}
+		\nabla^2f(\begin{bmatrix}0 \\ -2\end{bmatrix}) = \begin{bmatrix}2 & -4\\-4 & 0\end{bmatrix}
+	\end{equation*}
+	
+	TODO
+\end{itemize}
+
+\pagebreak
+\subsection*{c) $f(\textbf{x})=x_1^2+x_1\|\textbf{x}\|^2+\|\textbf{x}\|^2$}
+
+Using the property $\|\textbf{x}\|^2=(\sqrt{x_1^2+x_2^2})^2=x_1^2+x_2^2$, we simplify the function $f$ as follows:
+
+\begin{equation*}
+	f(\textbf{x})=x_1^2+x_1(x_1^2+x_2^2)+x_1^2+x_2^2=x_1^3+2x_1^2+x_2^2+x_1x_2^2
+\end{equation*}
+
+\noindent
+Next we compute the partial derivatives of $f$ with respect to $x_1$ and $x_2$: 
+
+\begin{equation*}
+\frac{\partial f(\textbf{x})}{\partial x_1}=3x_1^2+4x_1+x_2^2
+\end{equation*}
+
+\begin{equation*}
+\frac{\partial f(\textbf{x})}{\partial x_2}=2x_2+2x_1x_2
+\end{equation*}
+
+\noindent
+which gives us the gradient:
+
+\begin{equation*}
+	\nabla f(\textbf{x}) = \begin{bmatrix}
+		3x_1^2+4x_1+x_2^2 \\
+		2x_2+2x_1x_2
+	\end{bmatrix}
+\end{equation*}
+
+\noindent
+Computing the partial derivatives of the gradient with respect to $x_1$ and $x_2$ we get:
+
+\begin{equation*}
+	\frac{\partial\nabla f(\textbf{x})}{\partial x_1}=\begin{bmatrix}
+		6x_1+4 \\
+		2x_2
+	\end{bmatrix}
+\end{equation*}
+
+\begin{equation*}
+	\frac{\partial\nabla f(\textbf{x})}{\partial x_2}=\begin{bmatrix}
+		2x_2 \\
+		2x_1+2
+	\end{bmatrix}
+\end{equation*}
+
+\noindent
+which gives us the Hessian matrix:
+
+\begin{equation*}
+	\nabla^2f(x)=\begin{bmatrix}
+		6x_1+4 & 2x_2 \\
+		2x_2 & 2x_1+2
+	\end{bmatrix}
+\end{equation*}
+
+\noindent
+To get the stationary points, we need $\nabla f(\textbf{x})=\begin{bmatrix}3x_1^2+4x_1+x_2^2 \\ 2x_2+2x_1x_2\end{bmatrix}=\begin{bmatrix}0 \\ 0 \end{bmatrix}$, which gives us the following system of equations:
+
+\begin{equation*}
+	3x_1^2+4x_1+x_2^2=0
+\end{equation*}
+
+\begin{equation*}
+	2x_2+2x_1x_2=0
+\end{equation*}
+
+\noindent
+From the second equation we get:
+
+\begin{equation*}
+	x_2(2x_1+2)=0
+\end{equation*}
+
+\noindent
+which gives us $x_2=0$ and $2x_1+2=0 \rightarrow x_1=-1$. Plugging these two values into the first equation we get:
+
+\begin{equation*}
+	3x_1^2+4x_1+0^2=0
+\end{equation*}
+
+\begin{equation*}
+	x_1(3x_1+4)=0
+\end{equation*}
+
+\noindent
+therefore $x_{1,1}=0$ and $x_{1,2}=-\frac{4}{3}$. And
+
+\begin{equation*}
+	3(-1)^2+4(-1)+x_2^2=0
+\end{equation*}
+
+\begin{equation*}
+	x_2^2=1
+\end{equation*}
+
+\noindent
+therefore $x_{2,1}=-1$ and $x_{2,2}=1$. In total we have thus obtained four candidate points: $\begin{bmatrix}0 \\ 0\end{bmatrix}$, $\begin{bmatrix}-\frac{4}{3} \\ 0\end{bmatrix}$, $\begin{bmatrix}-1 \\ -1\end{bmatrix}$ and $\begin{bmatrix}-1 \\ 1\end{bmatrix}$. 
+
+\hfill
+
+\noindent
+Next we need to determine the definiteness of the Hessian matrix in these points:
+
+\begin{itemize}
+	\item $\textbf{x}=\begin{bmatrix}0 \\ 0\end{bmatrix}$:
+	
+	\begin{equation*}
+		\nabla^2f(\begin{bmatrix}0 \\ 0\end{bmatrix}) = \begin{bmatrix}4 & 0\\0 & 2\end{bmatrix}
+	\end{equation*} 
+	
+	Because the matrix is diagonal, the eigenvalues are $\lambda_1=4>0$ and $\lambda_2=2>0$, therefore the matrix is positive definite, and the point $\begin{bmatrix}0 \\ 0\end{bmatrix}$ is a strict local minimum.
+	
+	\item $\textbf{x}=\begin{bmatrix}-\frac{4}{3} \\ 0\end{bmatrix}$:
+	
+	\begin{equation*}
+		\nabla^2f(\begin{bmatrix}-\frac{4}{3} \\ 0\end{bmatrix}) = \begin{bmatrix}-4 & 0\\0 & -\frac{2}{3}\end{bmatrix}
+	\end{equation*} 
+	
+	Again we have a diagonal matrix, where the eigenvalues are $\lambda_1=-4<0$ and $\lambda_2=-\frac{2}{3}<0$, therefore the matrix is negative definite, and the point $\begin{bmatrix}-\frac{4}{3} \\ 0\end{bmatrix}$ is a strict local maximum.
+	
+	\item $\textbf{x}=\begin{bmatrix}-1 \\ -1\end{bmatrix}$:
+	
+	\begin{equation*}
+		\nabla^2f(\begin{bmatrix}-1 \\ -1\end{bmatrix}) = \begin{bmatrix}-2 & -2\\-2 & 0\end{bmatrix}
+	\end{equation*} 
+
+	TODO	
+	
+	\item $\textbf{x}=\begin{bmatrix}-1 \\ 1\end{bmatrix}$:
+	
+	\begin{equation*}
+		\nabla^2f(\begin{bmatrix}0 \\ 0\end{bmatrix}) = \begin{bmatrix}-2 & 2\\2 & 0\end{bmatrix}
+	\end{equation*} 
+	
+	TODO
+\end{itemize}
+
+\pagebreak
+\subsection*{d) $f(\textbf{x})=\alpha x_1^2-2x_1+\beta x_2^2$}
+
+Computing the partial derivatives of $f$ with respect to $x_1$ and $x_2$ we get:
+
+\begin{equation*}
+	\frac{\partial f(\textbf{x})}{\partial x_1}=2\alpha x_1-2
+\end{equation*}
+
+\begin{equation*}
+	\frac{\partial f(\textbf{x})}{\partial x_2}=2\beta x_2
+\end{equation*}
+
+\noindent
+which gives us the gradient:
+
+\begin{equation*}
+	\nabla f(\textbf{x}) = \begin{bmatrix}
+		2\alpha x_1-2 \\
+		2\beta x_2
+	\end{bmatrix}
+\end{equation*}
+
+\noindent
+Next we compute the partial derivatives of the gradient with respect to $x_1$ and $x_2$:
+
+\begin{equation*}
+	\frac{\partial\nabla f(\textbf{x})}{\partial x_1} = \begin{bmatrix}
+		2\alpha \\
+		0
+	\end{bmatrix}
+\end{equation*}
+
+\noindent
+which gives us the Hessian matrix:
+
+\begin{equation*}
+	\nabla^2f(\textbf{x})=\begin{bmatrix}
+		2\alpha & 0 \\
+		0 & 2\beta
+	\end{bmatrix}
+\end{equation*}
+
+\noindent
+To get the stationary points, we need $\nabla f(\textbf{x})=\begin{bmatrix}2\alpha x_1-2 \\ 2\beta x_2\end{bmatrix}=\begin{bmatrix}0 \\ 0 \end{bmatrix}$, which gives us the following system of equations:
+
+\begin{equation*}
+	2\alpha x_1-2=0
+\end{equation*}
+
+\begin{equation*}
+	2\beta x_2=0
+\end{equation*}
+
+\noindent
+Rearranging the first equation, we get
+
+\begin{equation*}
+	\alpha x_1=1\rightarrow x_1=\frac{1}{\alpha}, \quad \alpha\neq 0
+\end{equation*}
+
+\noindent
+We clearly see that if $\alpha=0$ we have no stationary points because $0x_1=1$ is not satisfied for any $x_1\in\mathbb{R}$.
+
+\hfill
+
+\noindent
+For the second equation we get:
+
+\begin{equation*}
+	x_2 = \begin{cases}
+		c\in\mathbb{R}, & \text{if } \beta=0 \\
+		0, & \text{if } \beta\neq 0
+	\end{cases}
+\end{equation*}
+
+\noindent
+Because the Hessian matrix is diagonal, we know the eigenvalues are $\lambda_1=2\alpha$ and $\lambda_2=2\beta$. Therefore $\alpha$ and $\beta$ are the only parameters that determine whether a candidate point is a minima, maxima or a saddle point. More specifically:
+\begin{itemize}
+	\item minima: positive definiteness of the Hessian matrix is a sufficient condition, in other words all eigenvalues have to be strictly positive, so it is necessary that $\alpha>0$ and $\beta>0$.
+	\item maxima: negative definiteness of the Hessian matrix is a sufficient condition, in other words all eigenvalues have to be strictly negative, so it is necessary that $\alpha<0$ and $\beta<0$.
+	\item saddle point: indefiniteness of the Hessian matrix is a sufficient condition, in other words at least one eigenvalue has to be strictly positive and at least one eigenvalue has to be strictly negative, so either $\alpha>0$ and $\beta<0$, or $\alpha<0$ and $\beta>0$.
+\end{itemize}
+
+TODO what if beta is 0? I assume you can't do anything unless you know the specific point (x1, x2).
+
+\pagebreak
+\section*{2 \quad Matrix Calculus}
+
+\section*{3 \quad Numerical Gradient Verification}
+
+\section*{7 \quad Computing Gradient using Automatic Differentiation}
+
+\section*{8 \quad Training the Neural Network}
+
+\section*{9 \quad Inference}
 
 \end{document}

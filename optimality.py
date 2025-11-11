@@ -51,11 +51,41 @@ def task1():
     """ Start of your code
     """
     x1, x2 = np.meshgrid(np.linspace(-5, 5), np.linspace(-5, 5))
-    #ax[0, 0].contour(x1, x2, x1**2 + 0.5 * x2**2, 50)
+
+    # offset for text next to the points
+    delta = np.array([0.1, 0.1])
 
     ax[0, 0].contour(x1, x2, func_1a([x1,x2]), 50)
+    ax[0, 0].plot((-5, 5), ((2*(-5)+5)/6, (2*5+5)/6), color="red", label="global minima")
+    ax[0, 0].legend()
+
+    pntb1 = np.array([2, 0])
+    pntb2 = np.array([0, 2])
+    pntb3 = np.array([0, -2])
+
+    pntc1 = np.array([0, 0])
+    pntc2 = np.array([-4/3, 0])
+    pntc3 = np.array([-1, -1])
+    pntc4 = np.array([-1, 1])
+
     ax[0, 1].contour(x1, x2, func_1b([x1,x2]), 50)
+    ax[0, 1].scatter(pntb1[0], pntb1[1], marker="^")
+    ax[0, 1].annotate("min", tuple((pntb1+delta).tolist()))
+    ax[0, 1].scatter(pntb2[0], pntb2[1], marker="^")
+    ax[0, 1].annotate("min", tuple((pntb2+delta).tolist()))
+    ax[0, 1].scatter(pntb3[0], pntb3[1], marker="^")
+    ax[0, 1].annotate("min", tuple((pntb3+delta).tolist()))
+
     ax[1, 0].contour(x1, x2, func_1c([x1,x2]), 50)
+    ax[1, 0].scatter(pntc1[0], pntc1[1], marker="^")
+    ax[1, 0].annotate("min", tuple((pntc1+delta).tolist()))
+    ax[1, 0].scatter(pntc2[0], pntc2[1], marker="^")
+    ax[1, 0].annotate("min", tuple((pntc2+delta).tolist()))
+    ax[1, 0].scatter(pntc3[0], pntc3[1], marker="^")
+    ax[1, 0].annotate("min", tuple((pntc3+delta).tolist()))
+    ax[1, 0].scatter(pntc4[0], pntc4[1], marker="^")
+    ax[1, 0].annotate("min", tuple((pntc4+delta).tolist()))
+
     ax[1, 1].contour(x1, x2, func_1d([x1,x2]), 50)
 
     """ End of your code
